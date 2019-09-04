@@ -1,5 +1,5 @@
 # pysdo
-Python implementation of the Sparse Data Observers (SDO) outlier detection algorithm.
+pysdo is a Python implementation of the Sparse Data Observers (SDO) outlier detection algorithm.
 
 Features
 ---------
@@ -27,7 +27,7 @@ import pandas
 X = pandas.read_csv('my_dataset.csv')
 detector = pysdo.SDO(contamination=0.1)
 labels = detector.fit_predict(X)
-print ("Outliers":, [ i for i in range(labels.size) if labels[i]])
+print ("Outliers:", [ i for i in range(labels.size) if labels[i]])
 ```
 In this example, the observer count will be chosen automatically using Principal Component Analysis (PCA). However, it is highly recommended to choose at least the observer count manually relying on preknowledge about the dataset.
 

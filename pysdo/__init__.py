@@ -6,6 +6,7 @@
 # CN Group, TU Wien
 # https://www.cn.tuwien.ac.at/
 
+from sklearn.decomposition import PCA
 from sklearn.neighbors import KDTree
 from sklearn.utils import check_array, check_random_state
 
@@ -15,7 +16,7 @@ import scipy.spatial.distance as distance
 import multiprocessing as mp
 import ctypes
 
-def launchParallel(func, n_jobs):
+def _launchParallel(func, n_jobs):
 	if n_jobs is None:
 		n_jobs = 1
 	elif n_jobs < 0:
@@ -30,7 +31,6 @@ def launchParallel(func, n_jobs):
 			processes[-1].start()
 		for i in range(n_jobs):
 			processes[i].join()
-
 
 class SDO:
 	"""Outlier detection based on Sparse Data Observers"""
@@ -118,7 +118,7 @@ class SDO:
 		
 		if self.use_pca:
 			# choose number of observers as described in paper
-			pca = sklearn.decomposition.PCA()
+			pca = PCA()
 			pca.fit(X)
 			var = max(1,pca.explained_variance_[0])
 			sqerr = 0.01 * pca.explained_variance_[0]
@@ -165,7 +165,7 @@ class SDO:
 
 				thisP = np.sum (closest[:,None] == np.arange(self.k), axis=0)
 				
-		launchParallel(TrainWorker, self.n_jobs)
+		_launchParallel(TrainWorker, self.n_jobs)
 	
 		q = np.quantile(P, self.qv) if self.q is None else self.q
 		#self.observers = observers[P>=q].copy()
@@ -205,7 +205,7 @@ class SDO:
 				#dist_sorted = np.sort(dist, axis=1)
 				#scores[i:(i+self.chunksize)] = np.median(dist_sorted[:,0:self.x], axis=1)
 				
-		launchParallel(AppWorker, self.n_jobs)
+		_launchParallel(AppWorker, self.n_jobs)
 
 		if self.return_scores:
 			return scores
@@ -213,7 +213,6 @@ class SDO:
 		threshold = np.quantile(scores, 1-self.contamination)
 		
 		return scores > threshold
-		
 		
 	def fit_predict(self, X):
 		"""
@@ -232,6 +231,3 @@ class SDO:
 		"""
 		self.fit(X)
 		return self.predict(X)
-
-	
-		
