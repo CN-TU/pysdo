@@ -231,3 +231,30 @@ class SDO:
 		"""
 		self.fit(X)
 		return self.predict(X)
+
+	def get_params(self, deep=True):
+		"""
+		Return the model's parameters
+
+		Parameters
+		---------------
+		deep : bool, optional (default=True)
+			Return sub-models parameters.
+
+		Returns
+		---------------
+		params: dict, shape (n_parameters,)
+			A dictionnary mapping of the model's parameters.
+		"""
+		return {"k":self.k,
+				"use_pca":self.use_pca,
+				"q":self.q,
+				"qv":self.qv,
+				"x":self.x,
+				"hbs":self.hbs,
+				"return_scores":self.return_scores,
+				"contamination":self.contamination,
+				"metric":self.metric,
+				"random_state":str(self.random_state),
+				"chunksize":self.chunksize,
+				"n_jobs":self.n_jobs}
