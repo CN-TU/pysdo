@@ -157,7 +157,7 @@ class SDO:
 					P[:] += thisP[:]
 					i = globalI.value
 					globalI.value += self.chunksize
-				if i > m: return
+				if i >= m: return
 				closest = model.query(X[i:(i+self.chunksize)], return_distance=False, k=self.x).flatten()
 				#dist = distance.cdist(X[i:(i+self.chunksize)], observers, self.metric)
 				#dist_sorted = np.argsort(dist, axis=1)
@@ -198,7 +198,7 @@ class SDO:
 				with globalI.get_lock():
 					i = globalI.value
 					globalI.value += self.chunksize
-				if i > m: return
+				if i >= m: return
 				dist_sorted,_ = self.model.query(X[i:(i+self.chunksize)], return_distance=True, k=self.x)
 				scores[i:(i+self.chunksize)] = np.median(dist_sorted, axis=1)
 				#dist = distance.cdist(X[i:(i+self.chunksize)], self.observers, self.metric)
