@@ -247,7 +247,6 @@ class SDO:
 			A dictionnary mapping of the model's parameters.
 		"""
 		return {"k":None if self.use_pca else self.k,
-			"use_pca":self.use_pca,
 			"q":self.q,
 			"qv":self.qv,
 			"x":self.x,
