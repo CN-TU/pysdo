@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
 	name='pysdo',
-	version='0.1',
+	version='0.2',
 	description='SDO outlier detection algorithm',
 	author='Alexander Hartl',
 	author_email='alexander.hartl@tuwien.ac.at',
