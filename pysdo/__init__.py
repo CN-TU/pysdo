@@ -234,7 +234,7 @@ class SDO:
 
 	def get_params(self, deep=True):
 		"""
-		Return the model's parameters
+		Return the model's parameters.
 
 		Parameters
 		---------------
@@ -257,3 +257,18 @@ class SDO:
 			"random_state":str(self.random_state),
 			"chunksize":self.chunksize,
 			"n_jobs":self.n_jobs}
+
+	@property
+	def observers(self):
+		"""
+		Gets or sets the trained model represented as a matrix
+		of active observers.
+		"""
+		assert self.model is not None, 'Model has not been trained yet'
+		return np.asarray(self.model.data)
+		
+	@observers.setter
+	def observers(self, new_observers):
+		self.model = KDTree(new_observers, leaf_size=100, metric=self.metric)
+		self.k = new_observers.shape[0]
+		
