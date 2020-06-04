@@ -101,7 +101,6 @@ class SDO:
 		self.random_state = random_state
 		self.chunksize = chunksize
 		self.n_jobs = n_jobs
-		assert self.k >= self.x, "Number of nearest neighbors (x) cannot be larger than the number of observers (k)"
 		
 	def fit(self, X):
 		"""
@@ -126,6 +125,8 @@ class SDO:
 			Z = 1.96
 			self.k = int((m * Z**2 * var) // ((m-1) * sqerr + Z**2 * var))
 			
+		assert self.k >= self.x, "Number of nearest neighbors (x) cannot be larger than the number of observers (k)."
+		
 		if self.hbs:
 			Y = X.copy()
 			binning_param = 20
