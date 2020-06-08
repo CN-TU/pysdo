@@ -124,8 +124,6 @@ class SDO:
 			sqerr = 0.01 * pca.explained_variance_[0]
 			Z = 1.96
 			self.k = int((m * Z**2 * var) // ((m-1) * sqerr + Z**2 * var))
-			
-		assert self.k >= self.x, "Number of nearest neighbors (x) cannot be larger than the number of observers (k)."
 		
 		if self.hbs:
 			Y = X.copy()
@@ -166,7 +164,8 @@ class SDO:
 				#closest = dist_sorted[:,0:self.x].flatten()
 
 				thisP = np.sum (closest[:,None] == np.arange(self.k), axis=0)
-				
+
+		assert self.k >= self.x, "Number of nearest neighbors (x) cannot be larger than the number of observers (k)."	
 		_launchParallel(TrainWorker, self.n_jobs)
 	
 		q = np.quantile(P, self.qv) if self.q is None else self.q
@@ -206,7 +205,8 @@ class SDO:
 				#dist = distance.cdist(X[i:(i+self.chunksize)], self.observers, self.metric)
 				#dist_sorted = np.sort(dist, axis=1)
 				#scores[i:(i+self.chunksize)] = np.median(dist_sorted[:,0:self.x], axis=1)
-				
+		
+		assert self.k >= self.x, "Number of nearest neighbors (x) cannot be larger than the number of observers (k)."
 		_launchParallel(AppWorker, self.n_jobs)
 
 		if self.return_scores:
